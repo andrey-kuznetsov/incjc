@@ -25,7 +25,7 @@ import static incjc.ProcHelpers.inputStreamPump;
 
 public class IncJC {
 
-    public static final String TMP_INCJC_PREFIX = "tmp-incjc";
+    public static final String TMP_INCJC_PREFIX = "tmp-incjc-";
 
     public static final int RETVAL_COMPILATION_ERROR = 1;
     public static final int RETVAL_UNEXPECTED_FAILURE = 2;
@@ -248,6 +248,10 @@ public class IncJC {
 
     private static boolean javac(Set<String> sources, String classpath, String dstDir) {
         try {
+            String classpathEnv = System.getenv("CLASSPATH");
+            if (classpathEnv != null) {
+                classpath += File.pathSeparator + classpathEnv;
+            }
             ArrayList<String> cmd = Lists.newArrayList(getJdkExecutable("javac"), "-cp", classpath, "-d", dstDir);
             cmd.addAll(sources);
             debug(String.join(" ", cmd));
