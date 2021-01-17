@@ -25,7 +25,6 @@ import static incjc.ProcHelpers.inputStreamPump;
 
 public class IncJC {
 
-    public static final String META_DIR = System.getProperty("user.home") + File.separator + ".incjc-meta";
     public static final String TMP_INCJC_PREFIX = "tmp-incjc";
 
     public static final int RETVAL_COMPILATION_ERROR = 1;
@@ -41,7 +40,7 @@ public class IncJC {
 
             String classpath = args[0];
             String sourceDir = args[1];
-            if (!compile(classpath, sourceDir, META_DIR)) {
+            if (!compile(classpath, sourceDir)) {
                 System.exit(RETVAL_COMPILATION_ERROR);
             }
         } catch (RuntimeException e) {
@@ -51,7 +50,7 @@ public class IncJC {
         }
     }
 
-    public static boolean compile(String classpath, String sourceDir, String metaPath) {
+    public static boolean compile(String classpath, String sourceDir) {
         String absClasspath = Paths.get(classpath).toAbsolutePath().toString();
         String absSourceDir = Paths.get(sourceDir).toAbsolutePath().toString();
 
@@ -62,6 +61,9 @@ public class IncJC {
         } else {
             debug("All sources: " + System.lineSeparator() + String.join(System.lineSeparator(), allSources));
         }
+
+        String metaPath = metaInfoPathForSourceDir(absSourceDir);
+
         if (!MetaInfo.existsIn(metaPath)) {
             System.out.println("No meta information found in " + metaPath + ". Recompiling all sources.");
             return compileFully(absSourceDir, allSources, absClasspath, metaPath);
@@ -136,6 +138,11 @@ public class IncJC {
             FileUtils.deleteQuietly(classpathCopy.toFile());
             FileUtils.deleteQuietly(javacDest.toFile());
         }
+    }
+
+    private static String metaInfoPathForSourceDir(String sourceDir) {
+        return String.format("%s%s.incjc-meta-%s",
+            System.getProperty("user.home"), File.separator, DigestUtils.md5Hex(sourceDir));
     }
 
     private static void enrichMetaInfo(MetaInfo metaInfo, String sourceDir, Set<String> sources, Path classesRoot) {
