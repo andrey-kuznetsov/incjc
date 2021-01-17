@@ -71,7 +71,16 @@ public class IncJC {
 
     private static boolean compileFully(String sourceDir, Set<String> sources, String classpath, String metaPath) {
         try {
-            FileUtils.cleanDirectory(new File(classpath));
+            Path classPath = Paths.get(classpath);
+            if (Files.exists(classPath)) {
+                if (Files.isDirectory(classPath)) {
+                    FileUtils.cleanDirectory(classPath.toFile());
+                } else {
+                    throw new RuntimeException("Classpath provided is not a directory: " + classPath);
+                }
+            } else {
+                Files.createDirectories(classPath);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to clean directory " + classpath);
         }
