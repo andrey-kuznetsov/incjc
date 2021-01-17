@@ -48,7 +48,7 @@ public class JdkBasedClassFileExaminer implements Function<Path, ClassFileDesc> 
         Pattern depPattern = Pattern.compile("->\\s+(\\S+)");
         String jdepsOut = getProcessOutput(new String[] { getJdkExecutable("jdeps"), "-v", classFile.toString() });
         return Arrays.stream(jdepsOut.split(System.lineSeparator()))
-            .filter(line -> line.matches("\\s+" + className + ".*"))
+            .filter(line -> line.matches("\\s+" + className.replace(".", "\\.").replace("$", "\\$") + ".*"))
             .map(depPattern::matcher)
             .filter(Matcher::find)
             .map(m -> m.group(1))
