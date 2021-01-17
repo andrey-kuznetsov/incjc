@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,7 +31,8 @@ public class IncJC {
     public static final int RETVAL_COMPILATION_ERROR = 1;
     public static final int RETVAL_UNEXPECTED_FAILURE = 2;
 
-    private static final Function<Path, ClassFileDesc> CLASS_FILE_EXAMINER = new JdkBasedClassFileExaminer();
+    private static final Function<Collection<Path>, Collection<ClassFileDesc>> CLASS_FILE_EXAMINER =
+        new JdkBasedClassFileExaminer();
 
     public static void main(String[] args) {
         try {
@@ -153,8 +155,7 @@ public class IncJC {
         @Nullable Set<String> outClassNames)
     {
         metaInfo.addSources(sources.stream().collect(Collectors.toMap(Function.identity(), src -> hash(new File(src)))));
-        for (Path classFile : findAllClassFiles(classesRoot)) {
-            ClassFileDesc desc = CLASS_FILE_EXAMINER.apply(classFile);
+        for (ClassFileDesc desc : CLASS_FILE_EXAMINER.apply(findAllClassFiles(classesRoot))) {
             metaInfo.classes.put(desc.fullClassName, sourceDir + File.separator + desc.sourceFile);
             for (String dep : desc.dependsOn) {
                 metaInfo.deps.computeIfAbsent(dep, k -> new HashSet<>()).add(desc.fullClassName);
@@ -182,7 +183,9 @@ public class IncJC {
         allSources.forEach(src -> {
             String oldHash = prevSourceHashes.get(src);
             String newHash = hash(Paths.get(src).toFile());
-            debug("Comparing hashes for " + src + ", old = " + oldHash + ", new = " + newHash);
+            debug("Comparing hashes for " + src + ":" +
+                System.lineSeparator() + "old = " + oldHash +
+                System.lineSeparator() + "new = " + newHash);
             if (!Objects.equals(oldHash, newHash)) {
                 result.put(src, newHash);
             }

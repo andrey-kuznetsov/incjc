@@ -7,6 +7,10 @@
 - in terminal: `java -jar incjc-1.0-SNAPSHOT.jar <classpath> <sourcepath>`;
 - in IntelliJ Idea: create run configuration for `incjc.IncJC` main class.
 
+`<classpath>` will be wiped out at first run. 
+
+`<sourcepath>` should contain package directories and / or `.java` files; for example, in typical Gradle / Maven layout, `src/main/java` -- is OK, while `src/main` is not suitable.
+
 Extra classpath entries (external dependencies) can be provided by setting `CLASSPATH` environment variable.
 `INCJC_DEBUG` environment variable set to `1` enables debug output.
 
