@@ -24,7 +24,7 @@ public class JdkBasedClassFileExaminer implements Function<Path, ClassFileDesc> 
             throw new RuntimeException("Failed to find source file name with javap for " + classFile);
         }
 
-        Pattern classNamePattern = Pattern.compile("(class|interface) (\\S+).*\\{");
+        Pattern classNamePattern = Pattern.compile("(class|interface) ([^\\s<]+).*\\{");
         Matcher classNameMatcher = classNamePattern.matcher(javapOut);
 
         if (!classNameMatcher.find()) {
