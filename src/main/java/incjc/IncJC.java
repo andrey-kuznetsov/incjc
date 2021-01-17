@@ -183,7 +183,7 @@ public class IncJC {
             String oldHash = prevSourceHashes.get(src);
             String newHash = hash(Paths.get(src).toFile());
             debug("Comparing hashes for " + src + ", old = " + oldHash + ", new = " + newHash);
-            if (oldHash != null && !Objects.equals(oldHash, newHash)) {
+            if (!Objects.equals(oldHash, newHash)) {
                 result.put(src, newHash);
             }
         });
