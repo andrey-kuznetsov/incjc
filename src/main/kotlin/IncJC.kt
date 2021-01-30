@@ -45,8 +45,8 @@ object IncJC {
     }
 
     fun compile(classpath: String, sourceDir: String): Boolean {
-        val absClasspath = Paths.get(classpath).toAbsolutePath().toString()
-        val absSourceDir = Paths.get(sourceDir).toAbsolutePath().toString()
+        val absClasspath = Paths.get(classpath).toAbsolutePath().normalize().toString()
+        val absSourceDir = Paths.get(sourceDir).toAbsolutePath().normalize().toString()
         val allSources = findAllSources(absSourceDir)
         if (allSources.isEmpty()) {
             println("No sources found.")
