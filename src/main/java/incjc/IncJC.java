@@ -30,6 +30,7 @@ public class IncJC {
 
     public static final int RETVAL_COMPILATION_ERROR = 1;
     public static final int RETVAL_UNEXPECTED_FAILURE = 2;
+    public static final int RETVAL_ILLEGAL_ARGS = 3;
 
     private static final Function<Collection<Path>, Collection<ClassFileDesc>> CLASS_FILE_EXAMINER =
         new JdkBasedClassFileExaminer();
@@ -38,6 +39,7 @@ public class IncJC {
         try {
             if (args.length != 2) {
                 System.err.println("Usage: incjc <classpath> <sourcepath>");
+                System.exit(RETVAL_ILLEGAL_ARGS);
             }
 
             String classpath = args[0];
