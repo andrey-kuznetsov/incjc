@@ -5,7 +5,7 @@
 
 ## Launch
 - in terminal: `java -jar incjc-all.jar <classpath> <sourcepath>`;
-- in IntelliJ Idea: create run configuration for `incjc.IncJC` main class.
+- in IntelliJ Idea: create run configuration for `incjc.IncJC` object.
 
 `<classpath>` will be wiped out at first run. 
 

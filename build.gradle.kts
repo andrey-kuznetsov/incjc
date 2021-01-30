@@ -18,5 +18,10 @@ dependencies {
 }
 
 application {
-    mainClassName = "incjc.IncJC" // shadow plugin does not understand mainClass
+    @Suppress("DEPRECATION")  // shadow plugin does not understand mainClass
+    mainClassName = "incjc.IncJC"
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "1.8"
 }
