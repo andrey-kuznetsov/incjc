@@ -1,10 +1,10 @@
 # Simple incremental Java compiler
 
 ## Build
-`./gradlew jar`
+`./gradlew shadowJar`
 
 ## Launch
-- in terminal: `java -jar incjc-1.0-SNAPSHOT.jar <classpath> <sourcepath>`;
+- in terminal: `java -jar incjc-all.jar <classpath> <sourcepath>`;
 - in IntelliJ Idea: create run configuration for `incjc.IncJC` main class.
 
 `<classpath>` will be wiped out at first run. 
